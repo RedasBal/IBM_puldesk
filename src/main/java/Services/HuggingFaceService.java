@@ -23,7 +23,7 @@ public class HuggingFaceService {
                     "Only create a ticket if it is a real issue or request. " +
                     "Comment: " + commentText;
             String requestBody = "{"
-                    + "\"model\": \"google/flan-t5-base\","
+                    + "\"model\": \"meta-llama/Llama-3.3-70B-Instruct\","
                     + "\"messages\": [{\"role\": \"user\", \"content\": \""
                     + prompt.replace("\"", "\\\"") + "\"}],"
                     + "\"max_tokens\": 200"
@@ -36,7 +36,7 @@ public class HuggingFaceService {
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
             HttpResponse<String> response= client.send(request, HttpResponse.BodyHandlers.ofString());
-
+            System.out.println("HF RAW RESPONSE: " + response.body());
             return response.body();
 
         }catch (Exception e){
