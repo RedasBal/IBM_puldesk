@@ -1,0 +1,5 @@
+.idea/
+.git/
+*.md
+mvnw
+mvnw.cmd
