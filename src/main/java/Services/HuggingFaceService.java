@@ -36,7 +36,6 @@ public class HuggingFaceService {
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
             HttpResponse<String> response= client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("HF RAW RESPONSE: " + response.body());
             return response.body();
 
         }catch (Exception e){

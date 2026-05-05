@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PulseDesk</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        input, textarea { width: 100%; padding: 8px; margin: 8px 0; box-sizing: border-box; }
+        button { padding: 8px 16px; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+<h1>PulseDesk</h1>
+<p>Access this app at: <a href="http://localhost:8080">http://localhost:8080</a></p>
+
+<h2>Submit Comment</h2>
+<textarea id="commentText" rows="4" placeholder="Enter your comment..."></textarea>
+<button onclick="submitComment()">Submit</button>
+<p id="message"></p>
+
+<h2>Tickets</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Priority</th>
+        <th>Summary</th>
+    </tr>
+    </thead>
+    <tbody id="ticketsTable"></tbody>
+</table>
+
+<script>
+    async function submitComment() {
+        const text = document.getElementById("commentText").value;
+        if (!text) return;
+
+        const response = await fetch("/comments", {
+            method: "POST",
+            headers: { "Content-Type": "text/plain" },
+            body: text
+        });
+
+        const data = await response.json();
+        document.getElementById("message").innerText =
+            data.status ? "Ticket created!" : "Comment saved (no ticket needed)";
+        document.getElementById("commentText").value = "";
+
+        if (data.status) {
+            loadTicketByCommentId(data.id);
+        } else {
+            document.getElementById("ticketsTable").innerHTML = "";
+        }
+    }
+
+    async function loadTicketByCommentId(commentId) {
+        const response = await fetch("/tickets");
+        const tickets = await response.json();
+        const ticket = tickets.find(t => t.commentId == commentId);
+        const tbody = document.getElementById("ticketsTable");
+        tbody.innerHTML = "";
+        if (ticket) {
+            tbody.innerHTML = `<tr>
+                <td>${ticket.id}</td>
+                <td>${ticket.title}</td>
+                <td>${ticket.category}</td>
+                <td>${ticket.priority}</td>
+                <td>${ticket.summary}</td>
+            </tr>`;
+        }
+    }
+</script>
+
+</body>
+</html>
