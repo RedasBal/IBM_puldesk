@@ -16,6 +16,7 @@ A Spring Boot REST API which automaticly checks user comments using Hugging Face
 - H2 in-memory database
 - Hugging Face Inference API (Groq provider)
 - JUnit 5 + Mockito (unit tests)
+- Docker
 
 ## Setup Instructions
 
@@ -32,13 +33,20 @@ Open `src/main/resources/application.properties` and replace:
 with your actual token.
 You should see: YOUR_HF_TOKEN_HERE
 
+or you can run with a docker
+1).\mvnw clean package -DskipTests
+2) .\mvnw docker build -t pulsedesk .
+3) docker run -p 8080:8080 -e huggingface.api.token=YOUR_HF_TOKEN_HERE pulsedesk
+#YOUR_HF_TOKEN_HERE which can you get from step(1. Get a Hugging Face API Token)
+
 ### 3. Run the application
 
 ```bash
-mvn spring-boot:run
+.\mvnw spring-boot:run
 ```
+From Intellij
+run `IbmPuldeskApplication.java` directly from IntelliJ.
 
-Or run `IbmPuldeskApplication.java` directly from IntelliJ.
 
 ### 4. Open the UI
 
@@ -46,12 +54,12 @@ Go to: [http://localhost:8080](http://localhost:8080)
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | /comments | Submit a new comment |
-| GET | /comments | Get all comments |
-| GET | /tickets | Get all tickets |
-| GET | /tickets/{id} | Get ticket by ID |
+| Method | Endpoint      | Description          |
+|--------|---------------|----------------------|
+| POST   | /comments     | Submit a new comment |
+| GET    | /comments     | Get all comments     |
+| GET    | /tickets      | Get all tickets      |
+| GET    | /tickets/{id} | Get ticket by ID     |
 
 ## Running Tests
 
