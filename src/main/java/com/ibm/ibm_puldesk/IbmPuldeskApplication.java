@@ -12,8 +12,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = "Model")
 public class IbmPuldeskApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(IbmPuldeskApplication.class, args);
+        try {
+            Runtime.getRuntime().exec("cmd /c start http://localhost:8080");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
